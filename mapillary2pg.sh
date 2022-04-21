@@ -16,6 +16,9 @@ export DATE_YMD=$(date "+%Y%m%d")
 cd $REPER
 echo $REPER
 
+rm $REPER'/images/'$DATE_YMD'/'*
+rm $REPER'/objets/'$DATE_YMD'/'*
+
 # EXTRACTION DES COORDONNEES DE L'EMPRISE
 Y1=$(echo $BBOX | cut -c 9-16)
 echo $Y1
@@ -75,12 +78,17 @@ do
     else
       mkdir $REPER'/images/'$DATE_YMD
     fi
-    rm $REPER'/images/'$DATE_YMD'/'*
     wget 'https://graph.mapillary.com/images?access_token='$TOKEN'&fields=id,geometry,captured_at,exif_orientation&start_captured_at='$DATE_DEBUT'&bbox='$vBBOX -O $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
     find $REPER'/images/'$DATE_YMD | xargs grep -l '{"data":\[\]}' | xargs -I {} rm -rf {}
-    sed -i -e 's/"data":/"type": "FeatureCollection", "features":/g' $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
-    sed -i -e 's/"id"/"type": "Feature","id"/g' $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
 
+    FILE_IMG=$REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    if [ -f "$FILE_IMG" ]; then
+        echo "$FILE_IMG existe."
+        sed -i -e 's/"data":/"type": "FeatureCollection", "features":/g' $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+        sed -i -e 's/"id"/"type": "Feature","id"/g' $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    fi
+
+    # INFORMATIONS
     #ogrinfo -ro -al -so \
     #    -oo AUTODETECT_TYPE=YES \
     #    -oo AUTODETECT_WIDTH=YES \
@@ -94,11 +102,14 @@ do
     else
       mkdir $REPER'/objets/'$DATE_YMD
     fi
-    rm $REPER'/objets/'$DATE_YMD'/'*
     wget 'https://graph.mapillary.com/map_features?access_token='$TOKEN'&fields=id,geometry,object_value,object_type,images&start_last_seen_at='$DATE_DEBUT'&bbox='$vBBOX -O $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
     find $REPER'/objets/'$DATE_YMD | xargs grep -l '{"data":\[\]}' | xargs -I {} rm -rf {}
-    sed -i -e 's/"data":/"type": "FeatureCollection", "features":/g' $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
-    sed -i -e 's/"id"/"type": "Feature","id"/g' $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    FILE_OBJ=$REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    if [ -f "$FILE_OBJ" ]; then
+        echo "$FILE_OBJ existe."
+        sed -i -e 's/"data":/"type": "FeatureCollection", "features":/g' $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+        sed -i -e 's/"id"/"type": "Feature","id"/g' $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    fi
 
     # INFORMATIONS
     #ogrinfo -ro -al -so \
