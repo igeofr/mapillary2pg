@@ -137,7 +137,7 @@ for i in $(ls $REPER'/images/'$DATE_YMD'/'*'.geojson')
 # IMPORT PG
 ogr2ogr \
     -append \
-    -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas=ref_mapillary" \
+    -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
     -nln 'mapillary_images' \
     -s_srs 'EPSG:4326' \
     -t_srs 'EPSG:2154' \
@@ -160,7 +160,7 @@ for i in $(ls $REPER'/objets/'$DATE_YMD'/'*'.geojson')
 # IMPORT PG
 ogr2ogr \
     -append \
-    -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas=ref_mapillary" \
+    -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
     -nln 'mapillary_objets' \
     -s_srs 'EPSG:4326' \
     -t_srs 'EPSG:2154' \
