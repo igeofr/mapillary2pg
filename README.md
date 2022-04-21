@@ -1,5 +1,5 @@
 # mapillary2pg
-Importer les données Mapillary dans PostgreSQL/PostGIS
+Importer les données Mapillary dans PostgreSQL/PostGIS (images et objets)
 
 ## Pour aller plus loin :
 - [API Mapillary](https://www.mapillary.com/developer/api-documentation/)
