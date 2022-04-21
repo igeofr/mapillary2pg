@@ -62,6 +62,7 @@ do
     sBBOX_Y2=$(echo $vBBOX_Y2 | sed -e 's/\./_/g')
     echo $sBBOX_Y2
 
+
     # PERMET DE RECUPERER LA POSITION DES IMAGES
     # Ajouter &limit=5 pour restreindre l'extraction
     DIR_IMG=$REPER'/images/'$DATE_YMD
@@ -70,7 +71,9 @@ do
     else
       mkdir $REPER'/images/'$DATE_YMD
     fi
-    wget 'https://graph.mapillary.com/images?access_token='$TOKEN'&fields=id,geometry&start_captured_at='$DATE_DEBUT'&bbox='$vBBOX -O $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    rm $REPER'/images/'$DATE_YMD'/'*
+    wget 'https://graph.mapillary.com/images?access_token='$TOKEN'&fields=id,geometry,captured_at,exif_orientation&start_captured_at='$DATE_DEBUT'&bbox='$vBBOX -O $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    find $REPER'/images/'$DATE_YMD | xargs grep -l '{"data":\[\]}' | xargs -I {} rm -rf {}
     sed -i -e 's/"data":/"type": "FeatureCollection", "features":/g' $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
     sed -i -e 's/"id"/"type": "Feature","id"/g' $REPER'/images/'$DATE_YMD'/'$DATE_YMD'_images_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
 
@@ -87,7 +90,9 @@ do
     else
       mkdir $REPER'/objets/'$DATE_YMD
     fi
-    wget 'https://graph.mapillary.com/map_features?access_token='$TOKEN'&fields=id,geometry,object_value,object_type&start_last_seen_at='$DATE_DEBUT'&bbox='$vBBOX -O $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    rm $REPER'/objets/'$DATE_YMD'/'*
+    wget 'https://graph.mapillary.com/map_features?access_token='$TOKEN'&fields=id,geometry,object_value,object_type,images&start_last_seen_at='$DATE_DEBUT'&bbox='$vBBOX -O $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
+    find $REPER'/objets/'$DATE_YMD | xargs grep -l '{"data":\[\]}' | xargs -I {} rm -rf {}
     sed -i -e 's/"data":/"type": "FeatureCollection", "features":/g' $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
     sed -i -e 's/"id"/"type": "Feature","id"/g' $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
 
@@ -99,8 +104,8 @@ do
     #    $REPER'/objets/'$DATE_YMD'/'$DATE_YMD'_objets_'$sBBOX_X1'_'$sBBOX_Y1'_'$sBBOX_X2'_'$sBBOX_Y2'.geojson'
 
   done
+#-----------------------------
 done
-
 # ------------------------------------------------------------------------------
 # DEBUT DE FUSION DES DONNEES ET DE L'INTEGRATION DANS PG
 echo 'Debut Mapillary PG'
