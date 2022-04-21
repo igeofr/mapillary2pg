@@ -1,5 +1,9 @@
 #!/bin/sh
 # ------------------------------------------------------------------------------
+# 2022 Florian Boret
+# https://github.com/igeofr/mapillary2pg
+# CC BY-SA 4.0 : https://creativecommons.org/licenses/by-sa/4.0/deed.fr
+#-------------------------------------------------------------------------------
 
 # VARIABLES DATES
 export DATE_YM=$(date "+%Y%m")
