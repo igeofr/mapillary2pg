@@ -12,6 +12,11 @@ Importer les données Mapillary dans PostgreSQL/PostGIS (images et objets)
 - [API Mapillary](https://www.mapillary.com/developer/api-documentation/)
 - [ogr2ogr](https://gdal.org/programs/ogr2ogr.html)
 
+## Autres liens 
+
+- [Traces Mapillary dans les GPS Garmin](https://blog.velocarte66.fr/fr/node/374)
+- [Python script for downloading data from Mapillary API v4 in a bounding box](https://gist.github.com/cbeddow/28e5d043a46ba34ea91f7b66564307d4)
+
 ## Licence
 
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.fr)
