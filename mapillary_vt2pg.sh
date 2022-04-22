@@ -43,8 +43,8 @@ echo $XMIN $YMIN $XMAX $YMAX
 echo 'Debut Mapillary'
 
 Z=$V_ZOOM
-file=$REPER'/'$DATE_YMD'_SEQUENCE.gpkg'
-rm $REPER'/'$DATE_YMD'_SEQUENCE.'*
+file=$REPER'/'$DATE_YMD'_MAPILLARY.gpkg'
+rm $REPER'/'$DATE_YMD'_MAPILLARY.'*
 for X in $(seq $XMIN $XMAX);do
    for Y in $(seq $YMIN $YMAX);do
       MVTFILE=${Z}'_'${X}'_'${Y}'.pbf'
@@ -55,10 +55,37 @@ for X in $(seq $XMIN $XMAX);do
       mkdir $REPER'/tuiles/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}
       curl -w "%{http_code}" $URL --max-time 120 --connect-timeout 60 -o $REPER'/tuiles/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}'/'$MVTFILE
 
-      ogr2ogr -progress -f 'GPKG' -update -append --debug ON -lco SPATIAL_INDEX=YES $file $REPER'/tuiles/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}'/'$MVTFILE --debug on -oo x=${X} -oo y=${Y} -oo z=${Z}
+      ogr2ogr -progress -f 'GPKG' -update -append --debug ON -lco SPATIAL_INDEX=YES $file $REPER'/tuiles/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}'/'$MVTFILE sequence image -nlt PROMOTE_TO_MULTI -oo x=${X} -oo y=${Y} -oo z=${Z}
 
    done
 done
+
+echo 'Import dans PG'
+
+# IMPORT PG
+ogr2ogr \
+    -append \
+    -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
+    -nln 'mapillary_vt_sequence' \
+    -s_srs 'EPSG:3857' \
+    -t_srs 'EPSG:2154' \
+    $file 'sequence' \
+    -dialect SQLITE \
+    --config OGR_TRUNCATE YES \
+    --debug ON \
+    --config CPL_LOG './'$REPER_LOGS'/'$DATE_YMD'_mapillary_vt_sequence.log'
+
+ogr2ogr \
+    -append \
+    -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
+    -nln 'mapillary_vt_image' \
+    -s_srs 'EPSG:3857' \
+    -t_srs 'EPSG:2154' \
+    $file 'image' \
+    -dialect SQLITE \
+    --config OGR_TRUNCATE YES \
+    --debug ON \
+    --config CPL_LOG './'$REPER_LOGS'/'$DATE_YMD'_mapillary_vt_image.log'
 
 # FIN DE FUSION DES DONNEES ET DE L'INTEGRATION DANS PG
 echo 'Fin Mapillary'
