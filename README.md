@@ -2,6 +2,9 @@
 
 Importer les données Mapillary dans PostgreSQL/PostGIS (images et objets)
 
+- [mapillary2pg.sh](mapillary.sh) permet de télécharger et d'intégrer des entités Mapillary dans PostgreSQL/PostGIS (attention le nombre d'entités par requête est limité)
+
+
 ## Pour aller plus loin
 
 - [API Mapillary](https://www.mapillary.com/developer/api-documentation/)
