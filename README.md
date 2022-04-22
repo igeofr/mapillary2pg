@@ -2,7 +2,7 @@
 
 Importer les données Mapillary dans PostgreSQL/PostGIS (images et objets)
 
-- [mapillary2pg.sh](https://github.com/igeofr/mapillary2pg/blob/main/mapillary2pg.sh) permet de télécharger et d'intégrer des [entités Mapillary](https://www.mapillary.com/developer/api-documentation/#entities) dans PostgreSQL/PostGIS (attention le nombre d'entités par requête est limité, il faut réduire le pas ou modifier la date de début pour contourner cette contrainte)
+- [mapillary2pg.sh](https://github.com/igeofr/mapillary2pg/blob/main/mapillary2pg.sh) permet de télécharger et d'intégrer des [entités Mapillary](https://www.mapillary.com/developer/api-documentation/#entities) dans PostgreSQL/PostGIS (*attention le nombre d'entités par requête est limité, il faut réduire le pas ou modifier la date de début pour contourner cette contrainte*)
 - [mapillary_vt2pg.sh](https://github.com/igeofr/mapillary2pg/blob/main/mapillary_vt2pg.sh) permet le téléchargement des [tuiles vectorielles de Mapillary](https://www.mapillary.com/developer/api-documentation/#vector-tiles) pour une intégration des données vectorielles dans PostgreSQL/PostGIS
 
   - Niveau 14 : images et sequences
