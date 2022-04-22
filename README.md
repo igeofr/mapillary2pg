@@ -8,7 +8,7 @@ Importer les données Mapillary dans PostgreSQL/PostGIS (images et objets)
   - Niveau 14 : images et sequences
   - Niveau 12 : sequences uniquement
 
-**Les scripts sont perfectibles et nécessitent encore un travail d'amélioration pour être pleinement exploitable.**
+**Les scripts sont perfectibles et encore développement. Ils nécessitent encore un travail d'amélioration pour être pleinement exploitable.**
 
 ## Pour aller plus loin
 
