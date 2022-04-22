@@ -54,7 +54,7 @@ for X in $(seq $XMIN $XMAX);do
    for Y in $(seq $YMIN $YMAX);do
 
       MVTFILE=${Z}'_'${X}'_'${Y}'.pbf'
-      
+
       #-------------------------------------------------------------------------------
       URL="https://tiles.mapillary.com/maps/vtp/mly1_public/2/$Z/$X/$Y?access_token=$TOKEN"
 
@@ -140,7 +140,7 @@ ogr2ogr \
     -s_srs 'EPSG:3857' \
     -t_srs 'EPSG:2154' \
     $file_pt 'point' \
-    -where "captured_at>$DATE_DEBUT_T" \
+    -where "last_seen_at>$DATE_DEBUT_T" \
     -dialect SQLITE \
     --config OGR_TRUNCATE YES \
     --debug ON \
