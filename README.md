@@ -21,6 +21,7 @@ sh mapillary2pg.sh map_features
 
 sh mapillary_vt2pg.sh image
 sh mapillary_vt2pg.sh point
+sh mapillary_vt2pg.sh signalisation
 ```
 
 ## Pour aller plus loin
