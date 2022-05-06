@@ -73,7 +73,6 @@ YMAX=$(lat2ytile $(echo $V_YMAX | sed -e 's/\./,/g') $V_ZOOM)
 echo $XMIN $YMIN $XMAX $YMAX
 
 #-------------------------------------------------------------------------------
-# IMAGE ET SEQUENCE
 echo 'Debut du traitement des données de Mapillary'
 
 if  [ "$TYPE" = "image" ]; then
