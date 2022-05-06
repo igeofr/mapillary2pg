@@ -7,13 +7,13 @@
 
 # RECUPERATION DU TYPE DE DATA A INTEGRER (image ou point)
 if [ "$#" -ge 1 ]; then
-  if [ "$1" = "image" ]  || [ "$1" = "point" ];
+  if [ "$1" = "image" ] || [ "$1" = "point" ] || [ "$1" = "signalisation" ];
   then
     TYPE=$1
     echo $TYPE
   else
   IFS= read -p "Type : " S_TYPE
-    if [ "$S_TYPE" = "image" ]  || [ "$S_TYPE" = "point" ];
+    if [ "$S_TYPE" = "image" ] || [ "$S_TYPE" = "point" ] || [ "$S_TYPE" = "signalisation" ];
     then
       export TYPE=$S_TYPE
       echo $TYPE
@@ -24,7 +24,7 @@ if [ "$#" -ge 1 ]; then
   fi
 else
   IFS= read -p "Type : " S_TYPE
-  if [ "$S_TYPE" = "image" ]  || [ "$S_TYPE" = "point" ];
+  if [ "$S_TYPE" = "image" ] || [ "$S_TYPE" = "point" ] || [ "$S_TYPE" = "signalisation" ];
   then
     export TYPE=$S_TYPE
     echo $TYPE
@@ -52,6 +52,7 @@ long2xtile(){
  long=$1
  zoom=$2
  echo -n "${long} ${zoom}" | awk '{ xtile = ($1 + 180.0) / 360 * 2.0^$2;
+  xtile+=xtile<0?-0.5:0.5;
   printf("%d", xtile ) }'
 }
 lat2ytile() {
@@ -84,6 +85,11 @@ then
   L_TYPE="point_detecte"
   VAR_URL="mly_map_feature_point"
   LAYER="point"
+elif [ "$TYPE" = "signalisation" ]
+then
+  L_TYPE="signalisation"
+  VAR_URL="mly_map_feature_traffic_sign"
+  LAYER="traffic_sign"
 fi
 
 file=$REPER'/'$DATE_YMD'_MAPILLARY_VT_'$L_TYPE'.gpkg'
@@ -166,6 +172,19 @@ then
         --config OGR_TRUNCATE YES \
         --debug ON \
         --config CPL_LOG './'$REPER_LOGS'/'$DATE_YMD'_mapillary_vt_point.log'
+elif [ "$TYPE" = "signalisation" ]
+then
+    ogr2ogr \
+        -append \
+        -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
+        -nln 'mapillary_vt_signalisation' \
+        -s_srs 'EPSG:3857' \
+        -t_srs 'EPSG:2154' \
+        $file 'traffic_sign' \
+        -where "last_seen_at>$DATE_DEBUT_T" \
+        -dialect SQLITE \
+        --config OGR_TRUNCATE YES \
+        --debug ON \
+        --config CPL_LOG './'$REPER_LOGS'/'$DATE_YMD'_mapillary_vt_signalisation.log'
 fi
-
 echo 'Fin du traitement des données de Mapillary'
