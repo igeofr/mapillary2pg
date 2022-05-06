@@ -19,7 +19,8 @@ Modifier les paramètres dans ```config.env``` et lancer le script
 sh mapillary2pg.sh images
 sh mapillary2pg.sh map_features
 
-sh mapillary_vt2pg.sh
+sh mapillary_vt2pg.sh image
+sh mapillary_vt2pg.sh point
 ```
 
 ## Pour aller plus loin
