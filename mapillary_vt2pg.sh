@@ -100,7 +100,7 @@ Z=$V_ZOOM
 for X in $(seq $XMIN $XMAX);do
    for Y in $(seq $YMAX $YMIN);do
 
-      PBF_FILE=${Z}'_'${X}'_'${Y}'.pbf'
+      MVT_FILE=${Z}'_'${X}'_'${Y}'.mvt'
 
       #-------------------------------------------------------------------------------
       URL="https://tiles.mapillary.com/maps/vtp/$VAR_URL/2/$Z/$X/$Y?access_token=$TOKEN"
@@ -112,7 +112,7 @@ for X in $(seq $XMIN $XMAX);do
       mkdir $REPER'/tuiles/tuiles_'$L_TYPE'/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}
 
       # TELECHARGEMENT DES TUILES
-      curl -w "%{http_code}" $URL --max-time 120 --connect-timeout 60 -o $REPER'/tuiles/tuiles_'$L_TYPE'/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}'/'$PBF_FILE
+      curl -w "%{http_code}" $URL --max-time 120 --connect-timeout 60 -o $REPER'/tuiles/tuiles_'$L_TYPE'/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}'/'$MVT_FILE
 
       # FUSION EN GPKG
       ogr2ogr \
@@ -122,7 +122,7 @@ for X in $(seq $XMIN $XMAX);do
       --debug ON \
       -lco SPATIAL_INDEX=YES \
       $file \
-      $REPER'/tuiles/tuiles_'$L_TYPE'/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}'/'$PBF_FILE $LAYER \
+      $REPER'/tuiles/tuiles_'$L_TYPE'/'${DATE_YMD}'/'${Z}'/'${X}'/'${Y}'/'$MVT_FILE $LAYER \
       -nlt PROMOTE_TO_MULTI \
       -oo x=${X} -oo y=${Y} -oo z=${Z}
 
