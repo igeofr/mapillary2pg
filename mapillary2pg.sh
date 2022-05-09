@@ -141,7 +141,7 @@ for i in $(ls $REPER'/'$TYPE'/'$DATE_YMD'/'*'.geojson')
 # IMPORT PG
 ogr2ogr \
     -append \
-    -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
+    -f "PostgreSQL" PG:"service='$C_SERVICE' schemas='$C_SCHEMA'" \
     -nln 'mapillary_'$TYPE \
     -s_srs 'EPSG:4326' \
     -t_srs 'EPSG:2154' \
