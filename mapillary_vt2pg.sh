@@ -45,6 +45,9 @@ export DATE_YMD=$(date "+%Y%m%d")
 cd $REPER
 echo $REPER
 
+DATE_EPOCH=date -d $DATE_DEBUT +%s
+echo $DATE_EPOCH
+
 #-------------------------------------------------------------------------------
 # BBOX ET IDENTIFICATION DES TUILES
 # Source : https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
@@ -140,7 +143,7 @@ if  [ "$TYPE" = "image" ]; then
         -s_srs 'EPSG:3857' \
         -t_srs 'EPSG:2154' \
         $file 'sequence' \
-        -where "captured_at>$DATE_DEBUT_T" \
+        -where "captured_at>$DATE_EPOCH" \
         -dialect SQLITE \
         --config OGR_TRUNCATE YES \
         --debug ON \
@@ -152,7 +155,7 @@ if  [ "$TYPE" = "image" ]; then
         -s_srs 'EPSG:3857' \
         -t_srs 'EPSG:2154' \
         $file 'image' \
-        -where "captured_at>$DATE_DEBUT_T" \
+        -where "captured_at>$DATE_EPOCH" \
         -dialect SQLITE \
         --config OGR_TRUNCATE YES \
         --debug ON \
@@ -166,7 +169,7 @@ then
         -s_srs 'EPSG:3857' \
         -t_srs 'EPSG:2154' \
         $file 'point' \
-        -where "last_seen_at>$DATE_DEBUT_T" \
+        -where "last_seen_at>$DATE_EPOCH" \
         -dialect SQLITE \
         --config OGR_TRUNCATE YES \
         --debug ON \
@@ -180,7 +183,7 @@ then
         -s_srs 'EPSG:3857' \
         -t_srs 'EPSG:2154' \
         $file 'traffic_sign' \
-        -where "last_seen_at>$DATE_DEBUT_T" \
+        -where "last_seen_at>$DATE_EPOCH" \
         -dialect SQLITE \
         --config OGR_TRUNCATE YES \
         --debug ON \
