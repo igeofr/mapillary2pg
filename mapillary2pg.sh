@@ -56,15 +56,15 @@ else
 fi
 
 # COORDONNEES DE L'EMPRISE
-echo $V_YMIN
-echo $V_YMAX
-echo $V_XMIN
-echo $V_XMAX
+echo $V_LAT_MIN
+echo $V_LAT_MAX
+echo $V_LONG_MIN
+echo $V_LONG_MAX
 
 # COMPTER LE NOMBRE D'ITERATIONS NECESSAIRES
-sizeX=$(echo "scale=0; (($V_XMAX - $V_XMIN)/$PAS)" | bc)
+sizeX=$(echo "scale=0; (($V_LONG_MAX - $V_LONG_MIN)/$PAS)" | bc)
 echo $sizeX
-sizeY=$(echo "scale=0; (($V_YMAX - $V_YMIN)/$PAS)" | bc)
+sizeY=$(echo "scale=0; (($V_LAT_MAX - $V_LAT_MIN)/$PAS)" | bc)
 echo $sizeY
 
 # EXTRACTION DES DONNEES PAR ITERATION
@@ -72,9 +72,9 @@ x=1
 while [ $x -le $sizeX ]
 do
   echo "X $x times"
-  vBBOX_X1=$(echo "scale=4; ($V_XMIN+(($x-1)*$PAS))" | bc)
+  vBBOX_X1=$(echo "scale=4; ($V_LONG_MIN+(($x-1)*$PAS))" | bc)
   echo $vBBOX_X1
-  vBBOX_X2=$(echo "scale=4; ($V_XMIN+($x*$PAS))" | bc)
+  vBBOX_X2=$(echo "scale=4; ($V_LONG_MIN+($x*$PAS))" | bc)
   echo $vBBOX_X2
   x=$(( $x + 1 ))
 
@@ -83,9 +83,9 @@ do
   while [ $y -le $sizeY ]
   do
     echo "Y $y times"
-    vBBOX_Y1=$(echo "scale=4; ($V_YMIN+(($y-1)*$PAS))" | bc)
+    vBBOX_Y1=$(echo "scale=4; ($V_LAT_MIN+(($y-1)*$PAS))" | bc)
     echo $vBBOX_Y1
-    vBBOX_Y2=$(echo "scale=4; ($V_YMIN+($y*$PAS))" | bc )
+    vBBOX_Y2=$(echo "scale=4; ($V_LAT_MIN+($y*$PAS))" | bc )
     echo $vBBOX_Y2
     y=$(( $y + 1 ))
 
