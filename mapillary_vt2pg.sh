@@ -66,10 +66,10 @@ lat2ytile() {
  echo -n "${ytile}";
 }
 
-XMIN=$(long2xtile $(echo $V_XMIN | sed -e 's/\./,/g') $V_ZOOM)
-XMAX=$(long2xtile $(echo $V_XMAX | sed -e 's/\./,/g') $V_ZOOM)
-YMIN=$(lat2ytile $(echo $V_YMIN | sed -e 's/\./,/g') $V_ZOOM)
-YMAX=$(lat2ytile $(echo $V_YMAX | sed -e 's/\./,/g') $V_ZOOM)
+XMIN=$(long2xtile $(echo $V_LONG_MIN | sed -e 's/\./,/g') $V_ZOOM)
+XMAX=$(long2xtile $(echo $V_LONG_MAX | sed -e 's/\./,/g') $V_ZOOM)
+YMIN=$(lat2ytile $(echo $V_LAT_MIN | sed -e 's/\./,/g') $V_ZOOM)
+YMAX=$(lat2ytile $(echo $V_LAT_MAX | sed -e 's/\./,/g') $V_ZOOM)
 echo $XMIN $YMIN $XMAX $YMAX
 
 #-------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ echo 'Import dans PG'
 if  [ "$TYPE" = "image" ]; then
     ogr2ogr \
         -append \
-        -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
+        -f "PostgreSQL" PG:"service='$C_SERVICE' schemas='$C_SCHEMA'" \
         -nln 'mapillary_vt_sequence' \
         -s_srs 'EPSG:3857' \
         -t_srs 'EPSG:2154' \
@@ -147,7 +147,7 @@ if  [ "$TYPE" = "image" ]; then
         --config CPL_LOG './'$REPER_LOGS'/'$DATE_YMD'_mapillary_vt_sequence.log'
     ogr2ogr \
         -append \
-        -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
+        -f "PostgreSQL" PG:"service='$C_SERVICE' schemas='$C_SCHEMA'" \
         -nln 'mapillary_vt_image' \
         -s_srs 'EPSG:3857' \
         -t_srs 'EPSG:2154' \
@@ -161,7 +161,7 @@ elif [ "$TYPE" = "point" ]
 then
     ogr2ogr \
         -append \
-        -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
+        -f "PostgreSQL" PG:"service='$C_SERVICE' schemas='$C_SCHEMA'" \
         -nln 'mapillary_vt_point' \
         -s_srs 'EPSG:3857' \
         -t_srs 'EPSG:2154' \
@@ -175,7 +175,7 @@ elif [ "$TYPE" = "signalisation" ]
 then
     ogr2ogr \
         -append \
-        -f "PostgreSQL" PG:"host='$C_HOST' user='$C_USER' dbname='$C_DBNAME' password='$C_PASSWORD' schemas='$C_SCHEMA'" \
+        -f "PostgreSQL" PG:"service='$C_SERVICE' schemas='$C_SCHEMA'" \
         -nln 'mapillary_vt_signalisation' \
         -s_srs 'EPSG:3857' \
         -t_srs 'EPSG:2154' \
