@@ -45,7 +45,7 @@ export DATE_YMD=$(date "+%Y%m%d")
 cd $REPER
 echo $REPER
 
-DATE_EPOCH=date -d $DATE_DEBUT +%s
+DATE_EPOCH=$(date -d $DATE_DEBUT +%s)
 echo $DATE_EPOCH
 
 #-------------------------------------------------------------------------------
